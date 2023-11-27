@@ -58,7 +58,6 @@ public class UserController {
         if (resultUser == null){
             throw new UserNotFoundException(String.format("id[%s] not found" , id));
         }
-
     }
 
 }
