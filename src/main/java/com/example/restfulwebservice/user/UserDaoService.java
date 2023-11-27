@@ -1,7 +1,5 @@
 package com.example.restfulwebservice.user;
 
-import com.sun.java.swing.plaf.windows.WindowsTextAreaUI;
-import com.sun.xml.internal.ws.developer.Serialization;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
