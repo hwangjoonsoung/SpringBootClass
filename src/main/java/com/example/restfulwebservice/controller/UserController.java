@@ -1,14 +1,20 @@
-package com.example.restfulwebservice.user;
+package com.example.restfulwebservice.controller;
 
+import com.example.restfulwebservice.exception.UserNotFoundException;
+import com.example.restfulwebservice.bean.User;
+import com.example.restfulwebservice.dao.UserDaoService;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.sound.midi.VoiceStatus;
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.Iterator;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 public class UserController {
@@ -25,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public User retrieveUser(@PathVariable Integer id) throws UserNotFoundException{
+    public User retrieveUser(@PathVariable Integer id) throws UserNotFoundException {
         User user = service.findOne(id);
         if(user == null){
             throw new UserNotFoundException(String.format("id[%s] not found" , id));
@@ -58,6 +64,21 @@ public class UserController {
         if (resultUser == null){
             throw new UserNotFoundException(String.format("id[%s] not found" , id));
         }
+    }
+    
+    //=======================hateoas 적용
+    @GetMapping("/hasteoas/users/{id}")
+    public EntityModel<User> retrieveUserUsingHeteoas(@PathVariable Integer id) throws UserNotFoundException {
+        User user = service.findOne(id);
+        if(user == null){
+            throw new UserNotFoundException(String.format("id[%s] not found" , id));
+        }
+
+        EntityModel entityModel = EntityModel.of(user);
+        WebMvcLinkBuilder webMvcLinkBuilder = linkTo(methodOn(this.getClass()).retrieveAllUsers());
+        entityModel.add(webMvcLinkBuilder.withRel("all-users"));
+
+        return entityModel;
     }
 
 }

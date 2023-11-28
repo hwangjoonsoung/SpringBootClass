@@ -1,4 +1,4 @@
-package com.example.exception;
+package com.example.restfulwebservice.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
