@@ -2,10 +2,7 @@ package com.example.restfulwebservice.bean;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -13,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -20,7 +18,7 @@ import java.util.Date;
 @JsonIgnoreProperties({"ssn" , "password"})
 @Schema(description = "JPA에서 사용하는 사용자 정보")
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class UserJPA{
 
     @Schema(title = "사용자 ID" ,description = "사용자 ID는 자동 생성한다.")
@@ -35,4 +33,15 @@ public class UserJPA{
     private String password;
     private String ssn;
 
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
+
+
+    public UserJPA(Integer id, String name, Date joinDate, String password, String ssn) {
+        this.id = id;
+        this.name = name;
+        this.joinDate = joinDate;
+        this.password = password;
+        this.ssn = ssn;
+    }
 }
