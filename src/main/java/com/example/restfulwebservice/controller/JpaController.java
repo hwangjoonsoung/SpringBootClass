@@ -1,5 +1,6 @@
 package com.example.restfulwebservice.controller;
 
+import com.example.restfulwebservice.bean.CountAndUser;
 import com.example.restfulwebservice.bean.Post;
 import com.example.restfulwebservice.bean.UserJPA;
 import com.example.restfulwebservice.exception.UserNotFoundException;
@@ -40,14 +41,14 @@ public class JpaController {
 
     /*responseEntity controll 하는법*/
     @GetMapping("/users2")
-    public ResponseEntity<List> findAll2(){
+    public ResponseEntity findAll2(){
         List<UserJPA> all = userRepository.findAll();
         long count = userRepository.count();
-        List list = new ArrayList();
-        list.add(count);
-        list.add(all);
+        CountAndUser countAndUser = new CountAndUser();
+        countAndUser.setCount((int) count);
+        countAndUser.setUsers(all);
 
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(countAndUser);
     }
 
 
